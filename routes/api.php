@@ -50,4 +50,12 @@ Route::prefix('quizzes/{quiz}/questions')
     ->group(function (Router $quiz) {
         $quiz->post('', \App\Http\Controllers\Quizzes\Questions\CreateController::class)
             ->name('create');
+
+        $quiz->delete('{question}', \App\Http\Controllers\Quizzes\Questions\DeleteController::class)
+            ->scopeBindings()
+            ->name('delete');
+
+        $quiz->patch('{question}', \App\Http\Controllers\Quizzes\Questions\UpdateController::class)
+            ->scopeBindings()
+            ->name('update');
     });

@@ -18,4 +18,11 @@ class QuestionFactory extends Factory
             'option_type' => $this->faker->randomElement(Question::OptionTypes),
         ];
     }
+
+    public function text(): QuestionFactory|Factory
+    {
+        return $this->state([
+                'option_type' => Question::OptionTypeText
+            ]);
+    }
 }

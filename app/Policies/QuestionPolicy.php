@@ -38,20 +38,30 @@ class QuestionPolicy
         return Response::allow();
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Question $question): bool
+    public function update(User $user, Question $question): Response
     {
-        return false;
+        if (! $question->quiz->isDraft()) {
+            return Response::deny('You cannot update a question in a '.$question->quiz->status.' quiz.');
+        }
+
+        if ($question->quiz->user_id !== $user->id) {
+            return Response::deny('You cannot update a question that is not yours.');
+        }
+
+        return Response::allow();
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Question $question): bool
+    public function delete(User $user, Question $question): Response
     {
-        return false;
+        if ($question->quiz->user_id !== $user->id) {
+            return Response::deny('You cannot delete a question that is not yours.');
+        }
+
+        if (! $question->quiz->isDraft()) {
+            return Response::deny('You cannot delete a question from a published quiz.');
+        }
+
+        return Response::allow();
     }
 
     /**

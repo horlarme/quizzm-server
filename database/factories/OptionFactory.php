@@ -17,4 +17,11 @@ class OptionFactory extends Factory
             'value' => $this->faker->sentence(),
         ];
     }
+
+    public function image(): OptionFactory|Factory
+    {
+        return $this->state([
+            'value' => $this->faker->imageUrl(),
+        ]);
+    }
 }
