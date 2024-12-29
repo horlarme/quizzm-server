@@ -11,25 +11,21 @@ use Illuminate\Http\Request;
 /**
  * @tags Quizzes
  */
-class PublishController extends Controller
+class GetController extends Controller
 {
     /**
-     * Publish
+     * Get Quiz
      *
-     * Publish a quiz. Quiz will be available to other users.
+     * This endpoint retrieves a single quiz by its ID.
+     * For draft quizzes, the user must be the owner of the quiz.
      *
      * @throws AuthorizationException
      */
     public function __invoke(Quiz $quiz, Request $request)
     {
-        $quiz->loadMissing(['user', 'questions.options']);
+        $quiz->load(['user', 'questions.options']);
 
-        $this->authorize('publish', $quiz);
-
-        $quiz->update([
-            'status' => Quiz::StatusPublished,
-            'published_at' => now(),
-        ]);
+        $this->authorize('view', $quiz);
 
         return new QuizResource($quiz);
     }

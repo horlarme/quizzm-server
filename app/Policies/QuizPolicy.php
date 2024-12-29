@@ -8,9 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class QuizPolicy
 {
-    public function view(User $user, Quiz $quiz): bool
+    public function view(?User $user, Quiz $quiz): Response
     {
-        return false;
+        if ($quiz->isDraft() && $user?->id !== $quiz->user_id) {
+            return Response::deny('You are not authorized to view this quiz. Only the quiz owner can view a draft quiz.');
+        }
+
+        return Response::allow();
     }
 
     public function update(User $user, Quiz $quiz): Response

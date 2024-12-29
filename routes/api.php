@@ -39,4 +39,7 @@ Route::prefix('quizzes')
         $quizzes->post('{quiz}', \App\Http\Controllers\Quizzes\PublishController::class)
             ->name('publish')
             ->middleware('auth');
+
+        $quizzes->get('{quiz}', \App\Http\Controllers\Quizzes\GetController::class)
+            ->name('get');
     });

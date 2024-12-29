@@ -27,7 +27,10 @@ class QuizResource extends JsonResource
             'status' => $this->status ?? Quiz::StatusDraft,
             'start_time' => $this->start_time,
             'visibility' => $this->visibility,
+
+            'questions_count' => count($this->questions),
             'questions' => QuestionResource::collection($this->questions),
+            'user' => new UserPublicResource($this->user),
         ];
     }
 }

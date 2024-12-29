@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Question
+ * @mixin Question
  */
 class QuestionResource extends JsonResource
 {
@@ -20,7 +21,11 @@ class QuestionResource extends JsonResource
             'option_type' => $this->option_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'options' => OptionResource::collection($this->options),
+            'options' => $this->when(
+                $this->quiz->user_id === $request->user()?->id,
+                OptionResource::collection($this->options),
+                OptionPublicResource::collection($this->options)
+            ),
         ];
     }
 }

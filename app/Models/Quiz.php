@@ -3,16 +3,12 @@
 namespace App\Models;
 
 use Database\Factories\QuizFactory;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUniqueStringIds;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -26,23 +22,24 @@ use Illuminate\Support\Str;
  * @property bool $require_registration
  * @property bool $require_approval
  * @property string $start_type
- * @property Carbon|null $start_time
+ * @property \Illuminate\Support\Carbon|null $start_time
  * @property string $visibility
  * @property string|null $published_at
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property-read Collection<int, Question> $questions
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Question> $questions
  * @property-read int|null $questions_count
- * @property-read User $user
+ * @property-read \App\Models\User $user
  *
- * @method static QuizFactory factory($count = null, $state = [])
- * @method static Builder<static>|Quiz newModelQuery()
- * @method static Builder<static>|Quiz newQuery()
- * @method static Builder<static>|Quiz public ()
- * @method static Builder<static>|Quiz query()
- * @method static Builder<static>|Quiz selectMinimal()
+ * @method static \Database\Factories\QuizFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz public()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz published()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz selectMinimal()
  *
- * @mixin Eloquent
+ * @mixin \Eloquent
  */
 class Quiz extends Model
 {
@@ -130,7 +127,7 @@ class Quiz extends Model
      */
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Question::class)->inverse();
     }
 
     public function scopePublished(Builder $query): Builder
