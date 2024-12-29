@@ -15,13 +15,17 @@ class SearchController extends Controller
     /**
      * Search
      *
+     * Fetch a list of quizzes that match the given search criteria. The list of quiz return are only published and public quizzes.
+     *
      * @unauthenticated
      */
     public function __invoke(Request $request)
     {
         return QuizMinimalResource::collection(
             Quiz::query()
-                ->scopes(['selectMinimal', 'public'])
+                ->with('user')
+                ->withCount('questions')
+                ->scopes(['selectMinimal', 'public', 'published'])
                 ->paginate()
         );
     }

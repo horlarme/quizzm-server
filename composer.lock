@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e99a23c296b6dc1a24912a656ed93956",
+    "content-hash": "451c5b61417b94d92a91d2378c2b84d8",
     "packages": [
         {
             "name": "brick/math",
@@ -1424,6 +1424,77 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "lanin/laravel-api-debugger",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mlanin/laravel-api-debugger.git",
+                "reference": "eed485a7cfd01fe9248403af75a4ada950b7cde9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mlanin/laravel-api-debugger/zipball/eed485a7cfd01fe9248403af75a4ada950b7cde9",
+                "reference": "eed485a7cfd01fe9248403af75a4ada950b7cde9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.4.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.1",
+                "orchestra/testbench": ">=3.4.0",
+                "phpunit/phpunit": "^7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Debugger": "Lanin\\Laravel\\ApiDebugger\\Support\\Facade"
+                    },
+                    "providers": [
+                        "Lanin\\Laravel\\ApiDebugger\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "Lanin\\Laravel\\ApiDebugger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxim Lanin",
+                    "email": "max@lanin.me",
+                    "homepage": "http://lanin.me"
+                }
+            ],
+            "description": "Easily debug your JSON API.",
+            "keywords": [
+                "api",
+                "debug",
+                "debugger",
+                "dump",
+                "framework",
+                "json",
+                "laravel",
+                "log",
+                "queries"
+            ],
+            "support": {
+                "issues": "https://github.com/mlanin/laravel-api-debugger/issues",
+                "source": "https://github.com/mlanin/laravel-api-debugger/tree/4.0.0"
+            },
+            "time": "2020-07-09T10:34:16+00:00"
         },
         {
             "name": "laravel/framework",
@@ -10926,6 +10997,78 @@
                 }
             ],
             "time": "2024-10-09T05:16:32+00:00"
+        },
+        {
+            "name": "spatie/laravel-web-tinker",
+            "version": "1.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-web-tinker.git",
+                "reference": "2a0be1fb6c4bfb7235ab9d4c25d7752683a73753"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-web-tinker/zipball/2a0be1fb6c4bfb7235ab9d4c25d7752683a73753",
+                "reference": "2a0be1fb6c4bfb7235ab9d4c25d7752683a73753",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cookie": "^10.0|^11.0",
+                "illuminate/session": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0",
+                "laravel/tinker": "^2.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\WebTinker\\WebTinkerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\WebTinker\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Artisan Tinker in your browser",
+            "homepage": "https://github.com/spatie/laravel-web-tinker",
+            "keywords": [
+                "Tinker",
+                "debug",
+                "development",
+                "laravel",
+                "spatie",
+                "web-tinker"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-web-tinker/issues",
+                "source": "https://github.com/spatie/laravel-web-tinker/tree/1.9.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-12-23T10:50:52+00:00"
         },
         {
             "name": "staabm/side-effects-detector",

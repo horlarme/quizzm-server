@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasUlid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +25,8 @@ class Option extends Model
 {
     /** @use HasFactory<\Database\Factories\OptionFactory> */
     use HasFactory;
+
+    use HasUlid;
 
     protected $casts = [
         'is_correct' => 'boolean',

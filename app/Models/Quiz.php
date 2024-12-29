@@ -3,11 +3,16 @@
 namespace App\Models;
 
 use Database\Factories\QuizFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUniqueStringIds;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -21,20 +26,23 @@ use Illuminate\Support\Str;
  * @property bool $require_registration
  * @property bool $require_approval
  * @property string $start_type
- * @property \Illuminate\Support\Carbon|null $start_time
+ * @property Carbon|null $start_time
  * @property string $visibility
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
+ * @property string|null $published_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Question> $questions
+ * @property-read int|null $questions_count
+ * @property-read User $user
  *
- * @method static \Database\Factories\QuizFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz public()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz selectMinimal()
+ * @method static QuizFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Quiz newModelQuery()
+ * @method static Builder<static>|Quiz newQuery()
+ * @method static Builder<static>|Quiz public ()
+ * @method static Builder<static>|Quiz query()
+ * @method static Builder<static>|Quiz selectMinimal()
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Quiz extends Model
 {
@@ -78,6 +86,12 @@ class Quiz extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'require_registration' => 'boolean',
+        'require_approval' => 'boolean',
+        'start_time' => 'datetime',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -92,41 +106,45 @@ class Quiz extends Model
         return $this->status === self::StatusDraft;
     }
 
-    protected function isValidUniqueId($value): bool
+    public function scopeSelectMinimal(Builder $builder): Builder
     {
-        return true;
-    }
-
-    protected $casts = [
-        'require_registration' => 'boolean',
-        'require_approval' => 'boolean',
-        'start_time' => 'datetime',
-    ];
-
-    public function scopeSelectMinimal(Builder $builder)
-    {
-        return $builder->select('id', 'title', 'thumbnail', 'visibility')
+        return $builder->select('id', 'title', 'thumbnail', 'visibility', 'created_at', 'user_id')
             ->addSelect(DB::raw('LEFT(description, 100) as description'));
     }
 
-    public function scopePublic(Builder $builder)
+    public function scopePublic(Builder $builder): Builder
     {
         return $builder->where('visibility', Quiz::VisibilityPublic);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, static>
+     * @return BelongsTo<User, static>
      */
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Question, static>
+     * @return HasMany<Question, static>
      */
-    public function questions()
+    public function questions(): HasMany
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('status', self::StatusPublished);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->status === self::StatusPublished;
+    }
+
+    protected function isValidUniqueId($value): bool
+    {
+        return true;
     }
 }

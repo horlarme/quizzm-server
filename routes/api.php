@@ -35,4 +35,8 @@ Route::prefix('quizzes')
         $quizzes->patch('{quiz}', \App\Http\Controllers\Quizzes\UpdateController::class)
             ->name('update')
             ->middleware('auth');
+
+        $quizzes->post('{quiz}', \App\Http\Controllers\Quizzes\PublishController::class)
+            ->name('publish')
+            ->middleware('auth');
     });

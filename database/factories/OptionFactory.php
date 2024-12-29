@@ -9,15 +9,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OptionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'is_correct' => $this->faker->boolean(),
+            'question_id' => QuestionFactory::new(),
+            'value' => $this->faker->sentence(),
         ];
     }
 }

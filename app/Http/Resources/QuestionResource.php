@@ -20,7 +20,7 @@ class QuestionResource extends JsonResource
             'option_type' => $this->option_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'options' => OptionResource::collection($this->answers),
+            'options' => OptionResource::collection($this->options),
         ];
     }
 }

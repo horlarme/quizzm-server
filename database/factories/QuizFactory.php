@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Option;
+use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Quiz>
+ * @extends Factory<Quiz>
  */
 class QuizFactory extends Factory
 {
@@ -21,7 +23,13 @@ class QuizFactory extends Factory
             'require_registration' => $this->faker->boolean(),
             'require_approval' => $this->faker->boolean(),
             'status' => $this->faker->randomElement(Quiz::Statuses),
+            'published_at' => function (array $attributes) {
+                if ($attributes['status'] === Quiz::StatusPublished) {
+                    return $this->faker->dateTimeBetween('-1 month', '+1 month');
+                }
 
+                return null;
+            },
             'start_type' => $this->faker->randomElement(Quiz::StartTypes),
             'start_time' => $this->faker->dateTimeBetween('+30minutes', '+1 month'),
 
@@ -48,5 +56,21 @@ class QuizFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'status' => Quiz::StatusPublished,
         ]);
+    }
+
+    public function archived(): QuizFactory|Factory
+    {
+        return $this->state([
+            'status' => Quiz::StatusArchived,
+        ]);
+    }
+
+    public function validQuiz(): QuizFactory|Factory
+    {
+        return $this->has(
+            Question::factory()
+                ->count(2)
+                ->has(Option::factory()->count(4))
+        );
     }
 }

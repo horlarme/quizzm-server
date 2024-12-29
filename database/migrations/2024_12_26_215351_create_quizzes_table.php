@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('thumbnail');
 
             $table->enum('status', \App\Models\Quiz::Statuses)
+                ->index()
                 ->default(\App\Models\Quiz::StatusDraft);
 
             $table->boolean('require_registration')->default(false);
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->enum('visibility', \App\Models\Quiz::Visibilities)
                 ->default(\App\Models\Quiz::VisibilityPublic);
 
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
