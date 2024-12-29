@@ -42,4 +42,12 @@ Route::prefix('quizzes')
 
         $quizzes->get('{quiz}', \App\Http\Controllers\Quizzes\GetController::class)
             ->name('get');
+
+    });
+Route::prefix('quizzes/{quiz}/questions')
+    ->as('quiz.questions.')
+    ->middleware('auth')
+    ->group(function (Router $quiz) {
+        $quiz->post('', \App\Http\Controllers\Quizzes\Questions\CreateController::class)
+            ->name('create');
     });

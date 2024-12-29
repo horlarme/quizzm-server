@@ -4,28 +4,32 @@ namespace App\Models;
 
 use App\Traits\Models\HasUlid;
 use Database\Factories\QuestionFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
  * @property string $quiz_id
  * @property string $title
  * @property string $option_type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Option> $options
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Option> $options
  * @property-read int|null $options_count
- * @property-read \App\Models\Quiz $quiz
+ * @property-read Quiz $quiz
  *
- * @method static \Database\Factories\QuestionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Question newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Question newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Question query()
+ * @method static QuestionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Question newModelQuery()
+ * @method static Builder<static>|Question newQuery()
+ * @method static Builder<static>|Question query()
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Question extends Model
 {
@@ -42,6 +46,8 @@ class Question extends Model
     const OptionTypeImage = 'image';
 
     const OptionTypeText = 'text';
+
+    protected $guarded = [];
 
     /**
      * @return HasMany<Option, self>

@@ -3,7 +3,9 @@
 namespace App\Policies;
 
 use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class QuestionPolicy
 {
@@ -23,12 +25,17 @@ class QuestionPolicy
         return false;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(User $user, Quiz $quiz): Response
     {
-        return false;
+        if (! $quiz->isDraft()) {
+            return Response::deny('You cannot add questions to a published quiz.');
+        }
+
+        if ($quiz->user_id !== $user->id) {
+            return Response::deny('You cannot add questions to a quiz that is not yours.');
+        }
+
+        return Response::allow();
     }
 
     /**
