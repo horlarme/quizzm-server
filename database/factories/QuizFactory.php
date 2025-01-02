@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Option;
-use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,10 +15,9 @@ class QuizFactory extends Factory
     {
         return [
             'user_id' => UserFactory::new(),
-            'title' => $this->faker->sentence(4),
-            'description' => $this->faker->text(100),
+            'title' => $this->faker->sentence(),
+            'description' => $this->faker->paragraph(),
             'thumbnail' => $this->faker->imageUrl(),
-
             'require_registration' => $this->faker->boolean(),
             'require_approval' => $this->faker->boolean(),
             'status' => $this->faker->randomElement(Quiz::Statuses),
@@ -37,38 +35,80 @@ class QuizFactory extends Factory
         ];
     }
 
-    public function public(): QuizFactory|Factory
+    public function requiresRegistration(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
+            'require_registration' => true,
+            'require_approval' => true,
+        ]);
+    }
+
+    public function withoutRegistration(): static
+    {
+        return $this->state([
+            'require_registration' => false,
+            'require_approval' => false,
+        ]);
+    }
+
+    public function automaticStart(?string $startTime = null): static
+    {
+        return $this->state([
+            'start_type' => Quiz::StartTypeAutomatic,
+            'start_time' => $startTime ?? now()->addHour(),
+        ]);
+    }
+
+    public function manualStart(): static
+    {
+        return $this->state([
+            'start_type' => Quiz::StartTypeManual,
+            'start_time' => null,
+        ]);
+    }
+
+    public function userStart(?string $startTime = null): static
+    {
+        return $this->state([
+            'start_type' => Quiz::StartTypeUser,
+            'start_time' => $startTime,
+        ]);
+    }
+
+    public function private(): static
+    {
+        return $this->state([
+            'visibility' => Quiz::VisibilityPrivate,
+        ]);
+    }
+
+    public function public(): static
+    {
+        return $this->state([
             'visibility' => Quiz::VisibilityPublic,
         ]);
     }
 
-    public function draft(): QuizFactory|Factory
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => Quiz::StatusDraft,
-        ]);
-    }
-
-    public function published(): QuizFactory|Factory
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => Quiz::StatusPublished,
-        ]);
-    }
-
-    public function archived(): QuizFactory|Factory
+    public function published(): static
     {
         return $this->state([
-            'status' => Quiz::StatusArchived,
+            'status' => Quiz::StatusPublished,
+            'published_at' => now(),
         ]);
     }
 
-    public function validQuiz(): QuizFactory|Factory
+    public function draft(): static
+    {
+        return $this->state([
+            'status' => Quiz::StatusDraft,
+            'published_at' => null,
+        ]);
+    }
+
+    public function validQuiz(): static
     {
         return $this->has(
-            Question::factory()
+            QuestionFactory::new()
                 ->count(2)
                 ->has(Option::factory()->count(4))
         );

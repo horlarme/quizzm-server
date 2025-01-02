@@ -62,14 +62,18 @@ class PlayerPolicy
         return Response::allow();
     }
 
-    public function approve(User $user, Player $player): Response
+    public function update(User $user, Player $player): Response
     {
+        if (! $player->quiz->require_registration) {
+            return Response::deny('This quiz does not require registration approval.');
+        }
+
         if ($user->id !== $player->quiz->user_id) {
-            return Response::deny('Only the quiz owner can approve registrations.');
+            return Response::deny('Only the quiz owner can update player status.');
         }
 
         if ($player->status !== Player::StatusPending) {
-            return Response::deny('This registration is not pending.');
+            return Response::deny('Only pending registrations can be updated.');
         }
 
         return Response::allow();

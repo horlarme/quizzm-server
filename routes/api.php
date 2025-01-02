@@ -70,12 +70,9 @@ Route::prefix('quizzes/{quiz}/players')
         // $quiz->post('start', \App\Http\Controllers\Quizzes\Players\StartController::class)
         // ->name('start');
 
-        // $quiz->patch('{player}/approve', \App\Http\Controllers\Quizzes\Players\ApproveController::class)
-        // ->name('approve');
-
-        // $quiz->patch('{player}/reject', \App\Http\Controllers\Quizzes\Players\RejectController::class)
-        // ->name('reject');
-
         $quiz->get('', \App\Http\Controllers\Quizzes\Players\ListController::class)
             ->name('list');
+
+        $quiz->patch('{player}', \App\Http\Controllers\Quizzes\Players\UpdateController::class)
+            ->name('update');
     });

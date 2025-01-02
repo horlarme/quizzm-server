@@ -23,8 +23,8 @@ class QuestionResource extends JsonResource
             'updated_at' => $this->updated_at,
             'options' => $this->when(
                 $this->quiz->user_id === $request->user()?->id,
-                OptionResource::collection($this->options),
-                OptionPublicResource::collection($this->options)
+                fn () => OptionResource::collection($this->options),
+                fn () => OptionPublicResource::collection($this->options)
             ),
         ];
     }
