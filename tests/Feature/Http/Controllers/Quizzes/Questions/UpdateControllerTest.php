@@ -39,11 +39,11 @@ test('only owner can update questions', function () {
                 Question::factory()->text()->make()->toArray(),
                 [
                     'options' => [
-                    ['value' => 'Paris', 'is_correct' => true],
-                    ['value' => 'New York', 'is_correct' => false],
-                    ['value' => 'London', 'is_correct' => false],
-                    ['value' => 'Tokyo', 'is_correct' => false],
-                ]]
+                        ['value' => 'Paris', 'is_correct' => true],
+                        ['value' => 'New York', 'is_correct' => false],
+                        ['value' => 'London', 'is_correct' => false],
+                        ['value' => 'Tokyo', 'is_correct' => false],
+                    ]]
             )
         )
         ->assertSuccessful()

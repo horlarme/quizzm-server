@@ -22,7 +22,7 @@ class QuestionFactory extends Factory
     public function text(): QuestionFactory|Factory
     {
         return $this->state([
-                'option_type' => Question::OptionTypeText
-            ]);
+            'option_type' => Question::OptionTypeText,
+        ]);
     }
 }

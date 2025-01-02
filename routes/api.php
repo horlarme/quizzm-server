@@ -7,18 +7,18 @@ Route::prefix('auth')
     ->middleware('throttle:30,1')
     ->group(function (Router $auth) {
 
-        $auth->get('/auth/user', \App\Http\Controllers\Authentication\CurrentSessionController::class)
+        $auth->get('user', \App\Http\Controllers\Authentication\CurrentSessionController::class)
             ->middleware('auth:sanctum')
             ->name('auth.session');
 
-        $auth->delete('/auth/logout', \App\Http\Controllers\Authentication\LogoutController::class)
+        $auth->delete('logout', \App\Http\Controllers\Authentication\LogoutController::class)
             ->middleware('auth:sanctum')
             ->name('auth.logout');
 
-        $auth->get('/auth/{driver}/callback', \App\Http\Controllers\Authentication\LoginController::class)
+        $auth->get('{driver}/callback', \App\Http\Controllers\Authentication\LoginController::class)
             ->name('oauth.callback');
 
-        $auth->get('/auth/{driver}', [\App\Http\Controllers\Authentication\LoginController::class, 'redirect'])
+        $auth->get('{driver}', [\App\Http\Controllers\Authentication\LoginController::class, 'redirect'])
             ->name('oauth.login');
     });
 
@@ -58,4 +58,24 @@ Route::prefix('quizzes/{quiz}/questions')
         $quiz->patch('{question}', \App\Http\Controllers\Quizzes\Questions\UpdateController::class)
             ->scopeBindings()
             ->name('update');
+    });
+
+Route::prefix('quizzes/{quiz}/players')
+    ->as('quiz.players.')
+    ->middleware('auth')
+    ->group(function (Router $quiz) {
+        $quiz->post('register', \App\Http\Controllers\Quizzes\Players\RegisterController::class)
+            ->name('register');
+
+        // $quiz->post('start', \App\Http\Controllers\Quizzes\Players\StartController::class)
+        // ->name('start');
+
+        // $quiz->patch('{player}/approve', \App\Http\Controllers\Quizzes\Players\ApproveController::class)
+        // ->name('approve');
+
+        // $quiz->patch('{player}/reject', \App\Http\Controllers\Quizzes\Players\RejectController::class)
+        // ->name('reject');
+
+        // $quiz->get('', \App\Http\Controllers\Quizzes\Players\ListController::class)
+        // ->name('list');
     });

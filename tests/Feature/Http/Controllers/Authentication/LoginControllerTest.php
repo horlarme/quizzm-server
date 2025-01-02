@@ -23,7 +23,7 @@ it('handles Google callback and logs in user', function () {
 
     Socialite::shouldReceive('driver->stateless->user')->andReturn($googleUser);
 
-    $this->get(route('oauth.callback', 'google'))
+    $this->getJson(route('oauth.callback', ['google', 'code' => 'code']))
         ->assertJsonStructure([
             'token', 'user',
         ]);
@@ -44,7 +44,7 @@ it('handles GitHub callback and logs in user', function () {
 
     Socialite::shouldReceive('driver->stateless->user')->andReturn($githubUser);
 
-    $this->get(route('oauth.callback', 'github'))
+    $this->getJson(route('oauth.callback', ['github', 'code' => 'code']))
         ->assertJsonStructure([
             'token', 'user',
         ]);

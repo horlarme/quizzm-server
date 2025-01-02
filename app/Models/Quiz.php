@@ -27,6 +27,8 @@ use Illuminate\Support\Str;
  * @property string|null $published_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Player> $players
+ * @property-read int|null $players_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Question> $questions
  * @property-read int|null $questions_count
  * @property-read \App\Models\User $user
@@ -143,5 +145,30 @@ class Quiz extends Model
     protected function isValidUniqueId($value): bool
     {
         return true;
+    }
+
+    /**
+     * @return HasMany<Player, static>
+     */
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
+    }
+
+    public function isStarted(): bool
+    {
+        if ($this->start_type === self::StartTypeAutomatic) {
+            return $this->start_time?->isPast() ?? false;
+        }
+
+        if ($this->start_type === self::StartTypeManual) {
+            return (bool) $this->started_at;
+        }
+
+        if ($this->start_type === self::StartTypeUser) {
+            return ! $this->start_time || $this->start_time->isPast();
+        }
+
+        return false;
     }
 }

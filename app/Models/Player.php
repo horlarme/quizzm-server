@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasUlid;
+use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $user_id
  * @property string $quiz_id
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Quiz $quiz
+ * @property-read \App\Models\User $user
  *
  * @method static \Database\Factories\PlayerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Player newModelQuery()
@@ -22,8 +27,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Player extends Model
 {
-    /** @use HasFactory<\Database\Factories\PlayerFactory> */
+    /** @use HasFactory<PlayerFactory> */
     use HasFactory;
+
+    use HasUlid;
 
     const Statuses = [
         self::StatusApproved,
@@ -36,4 +43,22 @@ class Player extends Model
     const StatusRejected = 'rejected';
 
     const StatusApproved = 'approved';
+
+    protected $guarded = [];
+
+    /**
+     * @return BelongsTo<User, static>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo<Quiz, static>
+     */
+    public function quiz(): BelongsTo
+    {
+        return $this->belongsTo(Quiz::class);
+    }
 }

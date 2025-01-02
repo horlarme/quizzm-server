@@ -28,7 +28,9 @@ class LoginController extends Controller
     {
         $this->confirmDriverSupport($driver);
 
-        $request->get('code');
+        $request->validate([
+            'code' => 'required|string',
+        ]);
 
         $user = Socialite::driver($driver)->stateless()->user();
         $nameArray = explode(' ', $user->getName());
