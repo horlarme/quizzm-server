@@ -12,7 +12,6 @@ class PlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => new UserPublicResource($this->user),
-            'quiz' => new QuizMinimalResource($this->quiz),
             'status' => $this->status,
             'created_at' => $this->created_at,
         ];

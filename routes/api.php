@@ -76,6 +76,6 @@ Route::prefix('quizzes/{quiz}/players')
         // $quiz->patch('{player}/reject', \App\Http\Controllers\Quizzes\Players\RejectController::class)
         // ->name('reject');
 
-        // $quiz->get('', \App\Http\Controllers\Quizzes\Players\ListController::class)
-        // ->name('list');
+        $quiz->get('', \App\Http\Controllers\Quizzes\Players\ListController::class)
+            ->name('list');
     });

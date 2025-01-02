@@ -74,4 +74,16 @@ class PlayerPolicy
 
         return Response::allow();
     }
+
+    /**
+     * Determine whether the user can view list of players.
+     */
+    public function viewAny(User $user, Quiz $quiz): Response
+    {
+        if ($user->id !== $quiz->user_id) {
+            return Response::deny('Only quiz owner can view players.');
+        }
+
+        return Response::allow();
+    }
 }
