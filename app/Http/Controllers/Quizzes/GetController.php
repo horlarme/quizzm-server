@@ -20,6 +20,8 @@ class GetController extends Controller
      * For draft quizzes, the user must be the owner of the quiz.
      *
      * @throws AuthorizationException
+     *
+     * @unauthenticated
      */
     public function __invoke(Quiz $quiz, Request $request)
     {

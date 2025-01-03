@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Option> $options
  * @property-read int|null $options_count
  * @property-read \App\Models\Quiz $quiz
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  *
  * @method static \Database\Factories\QuestionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Question newModelQuery()
@@ -51,6 +53,11 @@ class Question extends Model
     public function options(): HasMany
     {
         return $this->hasMany(Option::class)->chaperone();
+    }
+
+    public function results()
+    {
+        return $this->hasManyThrough(Result::class, Option::class);
     }
 
     /**

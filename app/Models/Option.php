@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Question $question
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Result> $results
+ * @property-read int|null $results_count
  *
  * @method static \Database\Factories\OptionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Option newModelQuery()
@@ -43,5 +45,10 @@ class Option extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function results()
+    {
+        return $this->hasMany(Result::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Option;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ResultFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'option_id' => OptionFactory::new(),
+            'user_id' => UserFactory::new(),
+            'is_correct' => fn (array $attrs) => Option::query()->where('id', $attrs['option_id'])->value('is_correct'),
         ];
     }
 }

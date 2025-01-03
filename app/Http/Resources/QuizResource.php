@@ -29,7 +29,7 @@ class QuizResource extends JsonResource
             'visibility' => $this->visibility,
 
             'questions_count' => count($this->questions),
-            'questions' => QuestionResource::collection($this->questions),
+            'questions' => $this->when($request->user()?->id === $this->user_id, fn () => QuestionResource::collection($this->questions)),
             'user' => new UserPublicResource($this->user),
         ];
     }

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasUlid;
 use Database\Factories\QuizFactory;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Concerns\HasUniqueStringIds;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * @property string $id
@@ -34,6 +34,8 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Result[] $results
+ * @property-read int|null $results_count
  *
  * @method static \Database\Factories\QuizFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newModelQuery()
@@ -50,7 +52,8 @@ class Quiz extends Model
     /** @uses HasFactory<QuizFactory> */
     use HasFactory;
 
-    use HasUniqueStringIds;
+    use HasRelationships;
+    use HasUlid;
 
     const StartTypes = [
         self::StartTypeUser,
@@ -92,15 +95,6 @@ class Quiz extends Model
         'require_approval' => 'boolean',
         'start_time' => 'datetime',
     ];
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        self::creating(function (self $model) {
-            $model->setAttribute('id', Str::ulid());
-        });
-    }
 
     public function isDraft(): bool
     {
@@ -152,9 +146,9 @@ class Quiz extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    protected function isValidUniqueId($value): bool
+    public function results()
     {
-        return true;
+        return $this->hasManyDeepFromRelations($this->questions(), (new Question)->results());
     }
 
     /**
@@ -180,5 +174,23 @@ class Quiz extends Model
         }
 
         return false;
+    }
+
+    public function nextQuestionForUser(User $user): ?Question
+    {
+        return $this->questions()
+            ->whereNotIn(
+                'id',
+                $this->results()
+                    ->whereBelongsTo($user)
+                    ->select('question_id')
+            )
+            ->oldest()
+            ->first();
+    }
+
+    protected function isValidUniqueId($value): bool
+    {
+        return true;
     }
 }
