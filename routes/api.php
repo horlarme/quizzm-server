@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Tags\CreateController;
+use App\Http\Controllers\Tags\SearchController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
@@ -81,3 +83,11 @@ Route::middleware('auth')
         Route::get('{user}', \App\Http\Controllers\Users\ShowController::class)
             ->name('show');
     });
+
+Route::prefix('tags')->as('tags.')->group(function () {
+    Route::get('search', SearchController::class)
+        ->name('search');
+    Route::post('', CreateController::class)
+        ->name('create')
+        ->middleware('auth');
+});
