@@ -23,7 +23,7 @@ class GetController extends Controller
      */
     public function __invoke(Quiz $quiz, Request $request)
     {
-        $quiz->load(['user', 'questions.options']);
+        $quiz->load(['user', 'tags', 'questions.options']);
 
         $this->authorize('view', $quiz);
 

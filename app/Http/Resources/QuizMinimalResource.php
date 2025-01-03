@@ -13,7 +13,7 @@ class QuizMinimalResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $this->loadMissing('user');
+        $this->loadMissing(['user', 'tags']);
 
         return [
             'id' => $this->id,
@@ -24,6 +24,7 @@ class QuizMinimalResource extends JsonResource
             'questions_count' => $this->questions_count,
             'user' => new UserPublicResource($this->user),
             'created_at' => $this->created_at,
+            'tags' => TagResource::collection($this->tags),
         ];
     }
 }

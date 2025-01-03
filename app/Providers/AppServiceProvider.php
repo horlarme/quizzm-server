@@ -25,15 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::define('viewPulse', fn (?User $user) => app()->hasDebugModeEnabled() || $user?->email === 'lawaloladipupo@outlook.com');
 
-        Relation::morphMap([
-            'option' => Option::class,
-            'player' => Player::class,
-            'question' => Question::class,
-            'quiz' => Quiz::class,
-            'result' => Result::class,
-            'tag' => Tag::class,
-            'user' => User::class,
-        ]);
+        $this->enforceMorphMaps();
 
         JsonResource::withoutWrapping();
 
@@ -47,5 +39,21 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+    }
+
+    public function enforceMorphMaps(): void
+    {
+        $map = [
+            'option' => Option::class,
+            'player' => Player::class,
+            'question' => Question::class,
+            'quiz' => Quiz::class,
+            'result' => Result::class,
+            'tag' => Tag::class,
+            'user' => User::class,
+        ];
+
+        Relation::morphMap($map);
+        Relation::enforceMorphMap($map);
     }
 }

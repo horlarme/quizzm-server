@@ -19,7 +19,9 @@ class UpdateController extends Controller
      */
     public function __invoke(Quiz $quiz, UpdateRequest $request)
     {
-        $quiz->update($request->validated());
+        $quiz->update($request->only(['title', 'thumbnail', 'description']));
+
+        $quiz->tags()->sync($request->collect('tags', []));
 
         return new QuizResource($quiz);
     }

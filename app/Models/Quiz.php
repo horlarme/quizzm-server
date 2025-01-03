@@ -31,6 +31,8 @@ use Illuminate\Support\Str;
  * @property-read int|null $players_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Question> $questions
  * @property-read int|null $questions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
  * @property-read \App\Models\User $user
  *
  * @method static \Database\Factories\QuizFactory factory($count = null, $state = [])
@@ -140,6 +142,14 @@ class Quiz extends Model
     public function isPublished(): bool
     {
         return $this->status === self::StatusPublished;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany<Tag, static>
+     */
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     protected function isValidUniqueId($value): bool

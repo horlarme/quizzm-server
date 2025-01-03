@@ -23,7 +23,7 @@ class SearchController extends Controller
     {
         return QuizMinimalResource::collection(
             Quiz::query()
-                ->with('user')
+                ->with(['tags', 'user'])
                 ->withCount('questions')
                 ->scopes(['selectMinimal', 'public', 'published'])
                 ->paginate()

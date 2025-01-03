@@ -1,5 +1,7 @@
 <?php
 
+use Database\Factories\TagFactory;
+
 test('unauthenticated users cannot access the create quiz api', function () {
     $this->postJson(route('quizzes.create'))
         ->assertUnauthorized();
@@ -8,16 +10,32 @@ test('unauthenticated users cannot access the create quiz api', function () {
 test('authenticated users can access the create quiz api', function () {
     $this->actingAs(\Database\Factories\UserFactory::new()->create())
         ->postJson(route('quizzes.create'))
-        ->assertJsonValidationErrors(['description', 'title', 'thumbnail']);
+        ->assertJsonValidationErrors(['description', 'title', 'thumbnail', 'tags']);
 });
 
-test('quiz creation are automaticallly saved as draft', function () {
+test('quiz creation requires at least one tag', function () {
     $this->actingAs(\Database\Factories\UserFactory::new()->create())
         ->postJson(
             route('quizzes.create'),
             \Database\Factories\QuizFactory::new()
                 ->makeOne()
                 ->only(['title', 'description', 'thumbnail'])
+        )
+        ->assertJsonValidationErrors(['tags']);
+});
+
+test('quiz creation are automatically saved as draft', function () {
+    $tag = TagFactory::new()->createOne();
+
+    $this->actingAs(\Database\Factories\UserFactory::new()->create())
+        ->postJson(
+            route('quizzes.create'),
+            array_merge(
+                \Database\Factories\QuizFactory::new()
+                    ->makeOne()
+                    ->only(['title', 'description', 'thumbnail']),
+                ['tags' => [$tag->id]]
+            )
         )
         ->assertSuccessful()
         ->assertJson([

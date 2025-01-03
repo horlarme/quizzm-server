@@ -22,7 +22,7 @@ class PublishController extends Controller
      */
     public function __invoke(Quiz $quiz, Request $request)
     {
-        $quiz->loadMissing(['user', 'questions.options']);
+        $quiz->loadMissing(['user', 'tags', 'questions.options']);
 
         $this->authorize('publish', $quiz);
 

@@ -25,7 +25,12 @@ test('quiz can be updated', function () {
     $quiz = Quiz::factory()->draft()->create();
 
     $this->actingAs($quiz->user)
-        ->patchJson(route('quizzes.update', $quiz), $quizUpdate = Quiz::factory()->make()->toArray())
+        ->patchJson(
+            route('quizzes.update', $quiz), array_merge(
+                $quizUpdate = Quiz::factory()->make()->toArray(),
+                [
+                    'tags' => [\App\Models\Tag::factory()->create()->id],
+                ]))
         ->assertSuccessful()
         ->assertJsonFragment([
             'title' => $quizUpdate['title'],
