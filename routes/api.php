@@ -67,12 +67,17 @@ Route::prefix('quizzes/{quiz}/players')
         $quiz->post('register', \App\Http\Controllers\Quizzes\Players\RegisterController::class)
             ->name('register');
 
-        // $quiz->post('start', \App\Http\Controllers\Quizzes\Players\StartController::class)
-        // ->name('start');
-
         $quiz->get('', \App\Http\Controllers\Quizzes\Players\ListController::class)
             ->name('list');
 
         $quiz->patch('{player}', \App\Http\Controllers\Quizzes\Players\UpdateController::class)
             ->name('update');
+    });
+
+Route::middleware('auth')
+    ->prefix('users')
+    ->as('users.')
+    ->group(function () {
+        Route::get('{user}', \App\Http\Controllers\Users\ShowController::class)
+            ->name('show');
     });
