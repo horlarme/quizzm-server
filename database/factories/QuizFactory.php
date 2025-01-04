@@ -105,12 +105,17 @@ class QuizFactory extends Factory
         ]);
     }
 
-    public function validQuiz(): static
+    public function validQuiz($count = 2): static
     {
         return $this->has(
             QuestionFactory::new()
-                ->count(2)
-                ->has(Option::factory()->count(4))
+                ->count($count)
+                ->has(Option::factory()->count(4)->sequence(
+                    ['is_correct' => true],
+                    ['is_correct' => false],
+                    ['is_correct' => false],
+                    ['is_correct' => false],
+                ))
         );
     }
 }

@@ -47,6 +47,9 @@ Route::prefix('quizzes')
 
         $quizzes->get('{quiz}', \App\Http\Controllers\Quizzes\GetController::class)
             ->name('get');
+
+        $quizzes->get('{quiz}/leaderboard', \App\Http\Controllers\Quizzes\Results\LeaderboardController::class)
+            ->name('leaderboard');
     });
 
 Route::prefix('quizzes/{quiz}')
