@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Player;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -59,6 +60,39 @@ class QuizPolicy
     public function restore(User $user, Quiz $quiz): bool
     {
         return false;
+    }
+
+    public function play(User $user, Quiz $quiz): Response
+    {
+        if (! $quiz->isPublished()) {
+            return Response::deny('This quiz is not published yet.');
+        }
+
+        if ($quiz->require_registration) {
+            $player = $quiz->players()->where('user_id', $user->id)->first();
+
+            if (! $player) {
+                return Response::deny('You need to register for this quiz first.');
+            }
+
+            if ($player->status !== Player::StatusApproved) {
+                return Response::deny('Your registration has not been approved yet.');
+            }
+        }
+
+        if ($quiz->start_type === Quiz::StartTypeAutomatic && $quiz->start_time?->isFuture()) {
+            return Response::deny('This quiz has not started yet.');
+        }
+
+        if ($quiz->start_type === Quiz::StartTypeManual && ! $quiz->started_at) {
+            return Response::deny('This quiz has not been started by the owner yet.');
+        }
+
+        if ($quiz->start_type === Quiz::StartTypeUser && $quiz->start_time?->isFuture()) {
+            return Response::deny('This quiz is scheduled to start in the future.');
+        }
+
+        return Response::allow();
     }
 
     public function forceDelete(User $user, Quiz $quiz): bool

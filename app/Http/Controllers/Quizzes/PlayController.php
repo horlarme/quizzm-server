@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Quizzes\Players;
+namespace App\Http\Controllers\Quizzes;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuestionResource;
@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 /**
  * @tags Quizzes, Players
  */
-class StartController extends Controller
+class PlayController extends Controller
 {
     /**
-     * Start Quiz
+     * Start Quiz (Player)
      *
      * Start a quiz and get the first/next question.
      * If the user has already started the quiz, returns the next unanswered question.
@@ -25,11 +25,11 @@ class StartController extends Controller
      */
     public function __invoke(Quiz $quiz, Request $request)
     {
-        $this->authorize('start', [Player::class, $quiz]);
+        $this->authorize('play', $quiz);
 
         $nextQuestion = $quiz->nextQuestionForUser($request->user());
 
-        abort_if(! $nextQuestion, 404, 'No more questions available.');
+        abort_if(! $nextQuestion, 403, 'No more questions available.');
 
         return response()->json([
             'total' => (int) $quiz->questions()->count(),

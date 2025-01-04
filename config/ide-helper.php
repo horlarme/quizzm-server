@@ -167,7 +167,7 @@ return [
     */
 
     'model_hooks' => [
-        // App\Support\IdeHelper\MyModelHook::class
+        \Staudenmeir\EloquentHasManyDeep\IdeHelper\DeepRelationsHook::class,
     ],
 
     /*

@@ -8,7 +8,7 @@ test('fetching a single quiz returns the correct data', function () {
     $this->getJson(route('quizzes.get', $quiz))
         ->assertSuccessful()
         ->assertJsonFragment([
-            'id' => $quiz->id->toString(),
+            'id' => $quiz->id,
             'title' => $quiz->title,
             'description' => $quiz->description,
             'questions_count' => $quiz->questions->count(),

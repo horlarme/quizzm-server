@@ -53,7 +53,8 @@ Route::prefix('quizzes/{quiz}')
     ->as('quiz.')
     ->middleware('auth')
     ->group(function (Router $quiz) {
-        $quiz->post('play', \App\Http\Controllers\Quizzes\Players\StartController::class);
+        $quiz->post('play', \App\Http\Controllers\Quizzes\PlayController::class)
+            ->name('play');
     });
 
 Route::prefix('quizzes/{quiz}/questions')
@@ -71,7 +72,7 @@ Route::prefix('quizzes/{quiz}/questions')
             ->scopeBindings()
             ->name('update');
 
-        $quiz->post('{question}', \App\Http\Controllers\Quizzes\Questions\AnswerController::class)
+        $quiz->post('{question}/{option}', \App\Http\Controllers\Quizzes\Questions\AnswerController::class)
             ->scopeBindings()
             ->name('answer');
     });

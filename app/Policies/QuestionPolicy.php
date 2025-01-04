@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Option;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
@@ -49,10 +50,14 @@ class QuestionPolicy
         return Response::allow();
     }
 
-    public function answer(User $user, Question $question)
+    public function answer(User $user, Question $question, Option $option)
     {
         Gate::authorize('play', $question->quiz);
 
-        // todo: confirm selected option belongs to the question
+        if ($question->results()->where('user_id', $user->id)->exists()) {
+            return Response::deny('You have already answered this question.');
+        }
+
+        return Response::allow();
     }
 }
