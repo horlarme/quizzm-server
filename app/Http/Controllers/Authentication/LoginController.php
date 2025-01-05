@@ -33,7 +33,7 @@ class LoginController extends Controller
         ]);
 
         $user = Socialite::driver($driver)->stateless()->user();
-        $nameArray = explode(' ', $user->getName());
+        $nameArray = explode(' ', (string) $user->getName());
 
         $userInstance = User::query()
             ->firstOrCreate([

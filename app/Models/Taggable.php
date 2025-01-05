@@ -19,15 +19,18 @@ class Taggable extends MorphPivot
 {
     protected $guarded = [];
 
-    protected $casts = [
-        'attached_at' => 'datetime',
-    ];
-
     /**
      * @return MorphToMany<Quiz, static>
      */
     public function quizzes(): MorphToMany
     {
         return $this->morphedByMany(Quiz::class, 'taggable');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'attached_at' => 'datetime',
+        ];
     }
 }

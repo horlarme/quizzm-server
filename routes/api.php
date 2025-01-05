@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')
     ->middleware('throttle:30,1')
-    ->group(function (Router $auth) {
+    ->group(function (Router $auth): void {
 
         $auth->get('user', \App\Http\Controllers\Authentication\CurrentSessionController::class)
             ->middleware('auth:sanctum')
@@ -15,7 +15,7 @@ Route::prefix('auth')
 
         $auth->delete('logout', \App\Http\Controllers\Authentication\LogoutController::class)
             ->middleware('auth:sanctum')
-            ->name('auth.logout');
+            ->name(\Illuminate\Auth\Events\Logout::class);
 
         $auth->get('{driver}/callback', \App\Http\Controllers\Authentication\LoginController::class)
             ->name('oauth.callback');
@@ -26,7 +26,7 @@ Route::prefix('auth')
 
 Route::prefix('quizzes')
     ->as('quizzes.')
-    ->group(function (Router $quizzes) {
+    ->group(function (Router $quizzes): void {
         $quizzes->get('/', \App\Http\Controllers\Quizzes\SearchController::class)
             ->name('search');
 
@@ -55,7 +55,7 @@ Route::prefix('quizzes')
 Route::prefix('quizzes/{quiz}')
     ->as('quiz.')
     ->middleware('auth')
-    ->group(function (Router $quiz) {
+    ->group(function (Router $quiz): void {
         $quiz->post('play', \App\Http\Controllers\Quizzes\PlayController::class)
             ->name('play');
     });
@@ -63,7 +63,7 @@ Route::prefix('quizzes/{quiz}')
 Route::prefix('quizzes/{quiz}/questions')
     ->as('quiz.questions.')
     ->middleware('auth')
-    ->group(function (Router $quiz) {
+    ->group(function (Router $quiz): void {
         $quiz->post('', \App\Http\Controllers\Quizzes\Questions\CreateController::class)
             ->name('create');
 
@@ -83,7 +83,7 @@ Route::prefix('quizzes/{quiz}/questions')
 Route::prefix('quizzes/{quiz}/players')
     ->as('quiz.players.')
     ->middleware('auth')
-    ->group(function (Router $quiz) {
+    ->group(function (Router $quiz): void {
         $quiz->post('register', \App\Http\Controllers\Quizzes\Players\RegisterController::class)
             ->name('register');
 
@@ -97,12 +97,12 @@ Route::prefix('quizzes/{quiz}/players')
 Route::middleware('auth')
     ->prefix('users')
     ->as('users.')
-    ->group(function () {
+    ->group(function (): void {
         Route::get('{user}', \App\Http\Controllers\Users\ShowController::class)
             ->name('show');
     });
 
-Route::prefix('tags')->as('tags.')->group(function () {
+Route::prefix('tags')->as('tags.')->group(function (): void {
     Route::get('search', SearchController::class)
         ->name('search');
     Route::post('', CreateController::class)

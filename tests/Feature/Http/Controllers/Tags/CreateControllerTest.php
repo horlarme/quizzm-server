@@ -2,13 +2,13 @@
 
 use App\Models\Tag;
 
-test('unauthenticated users cannot create tags', function () {
+test('unauthenticated users cannot create tags', function (): void {
     $this->postJson(route('tags.create'), [
         'name' => 'Laravel',
     ])->assertUnauthorized();
 });
 
-test('authenticated users can create new tags', function () {
+test('authenticated users can create new tags', function (): void {
     $this->actingAs(\App\Models\User::factory()->create())
         ->postJson(route('tags.create'), [
             'name' => 'Laravel',
@@ -19,7 +19,7 @@ test('authenticated users can create new tags', function () {
     expect(Tag::where('name', 'Laravel')->exists())->toBeTrue();
 });
 
-test('creating existing tag returns the existing tag', function () {
+test('creating existing tag returns the existing tag', function (): void {
     $tag = Tag::factory()->create(['name' => 'Laravel']);
 
     $this->actingAs(\App\Models\User::factory()->create())

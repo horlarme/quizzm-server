@@ -25,7 +25,7 @@ class CreateController extends Controller
         /** @var \App\Models\Quiz $quiz */
         $quiz = $user->quizzes()->create($request->only(['title', 'thumbnail', 'description']));
 
-        $quiz->tags()->sync($request->collect('tags', []));
+        $quiz->tags()->sync($request->collect('tags'));
 
         return new QuizResource($quiz);
     }

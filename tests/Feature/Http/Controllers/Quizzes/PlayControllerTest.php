@@ -3,7 +3,7 @@
 use App\Models\Player;
 use App\Models\Quiz;
 
-test('players can play a registered quiz', function () {
+test('players can play a registered quiz', function (): void {
     $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart()->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 
@@ -16,7 +16,7 @@ test('players can play a registered quiz', function () {
         ]);
 });
 
-test('players can play a quiz they are not approved to play', function () {
+test('players can play a quiz they are not approved to play', function (): void {
     $quiz = Quiz::factory()->validQuiz()
         ->published()
         ->requiresRegistration()
@@ -30,7 +30,7 @@ test('players can play a quiz they are not approved to play', function () {
         ->assertForbidden();
 });
 
-test('players can play a quiz that is not published', function () {
+test('players can play a quiz that is not published', function (): void {
     $quiz = Quiz::factory()->validQuiz()->draft()->public()->userStart()->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 
@@ -39,7 +39,7 @@ test('players can play a quiz that is not published', function () {
         ->assertForbidden();
 });
 
-test('players cannot play a quiz they have not registered for', function () {
+test('players cannot play a quiz they have not registered for', function (): void {
     $quiz = Quiz::factory()->validQuiz()->draft()->public()->userStart()->create();
 
     $this->actingAs(\App\Models\User::factory()->createOne())
@@ -47,7 +47,7 @@ test('players cannot play a quiz they have not registered for', function () {
         ->assertForbidden();
 });
 
-test('the next question is returned when the previous question is answered', function () {
+test('the next question is returned when the previous question is answered', function (): void {
     $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart()->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 
@@ -68,7 +68,7 @@ test('the next question is returned when the previous question is answered', fun
         ->assertJsonMissingPath('question.options.*.is_correct');
 });
 
-test('no more questions are returned when all questions have been answered', function () {
+test('no more questions are returned when all questions have been answered', function (): void {
     $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart()->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 

@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
 
         JsonResource::withoutWrapping();
 
-        Scramble::afterOpenApiGenerated(function (OpenApi $openApi) {
+        Scramble::afterOpenApiGenerated(static function (OpenApi $openApi): void {
             $openApi->secure(
                 SecurityScheme::http('bearer')
             );

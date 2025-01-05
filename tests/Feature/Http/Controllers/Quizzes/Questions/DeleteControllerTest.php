@@ -3,7 +3,7 @@
 use App\Models\Quiz;
 use App\Models\User;
 
-test('others cannot delete questions', function () {
+test('others cannot delete questions', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs(User::factory()->create())
@@ -14,7 +14,7 @@ test('others cannot delete questions', function () {
         ->assertForbidden();
 });
 
-test('can delete questions', function () {
+test('can delete questions', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs($quiz->user)
@@ -25,7 +25,7 @@ test('can delete questions', function () {
         ->assertNoContent();
 });
 
-test('cannot delete questions for published quiz', function () {
+test('cannot delete questions for published quiz', function (): void {
     $quiz = Quiz::factory()->published()->validQuiz()->create();
 
     $this->actingAs($quiz->user)

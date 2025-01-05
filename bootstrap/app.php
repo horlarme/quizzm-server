@@ -13,8 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {})
-    ->withSchedule(function (Schedule $schedule) {})
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withMiddleware(function (Middleware $middleware): void {})
+    ->withSchedule(function (Schedule $schedule): void {})
+    ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

@@ -21,7 +21,7 @@ class UpdateController extends Controller
     {
         $quiz->update($request->only(['title', 'thumbnail', 'description']));
 
-        $quiz->tags()->sync($request->collect('tags', []));
+        $quiz->tags()->sync($request->collect('tags'));
 
         return new QuizResource($quiz);
     }

@@ -6,7 +6,6 @@ use App\Models\Question;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 class CreateRequest extends FormRequest
 {
@@ -32,10 +31,10 @@ class CreateRequest extends FormRequest
         return $rules;
     }
 
-    public function withValidator(Validator $validator): void
+    public function withValidator(\Illuminate\Contracts\Validation\Validator $validator): void
     {
-        $validator->after(function (Validator $validator) {
-            $correctOptionsCount = $this->collect('options', [])->where('is_correct', true)->count();
+        $validator->after(function (\Illuminate\Contracts\Validation\Validator $validator): void {
+            $correctOptionsCount = $this->collect('options')->where('is_correct', true)->count();
 
             $validator->errors()->addIf($correctOptionsCount !== 1, 'options', 'Exactly one option must be marked as correct.');
         });

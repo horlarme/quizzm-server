@@ -90,12 +90,6 @@ class Quiz extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'require_registration' => 'boolean',
-        'require_approval' => 'boolean',
-        'start_time' => 'datetime',
-    ];
-
     public function isDraft(): bool
     {
         return $this->status === self::StatusDraft;
@@ -192,5 +186,14 @@ class Quiz extends Model
     protected function isValidUniqueId($value): bool
     {
         return true;
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'require_registration' => 'boolean',
+            'require_approval' => 'boolean',
+            'start_time' => 'datetime',
+        ];
     }
 }

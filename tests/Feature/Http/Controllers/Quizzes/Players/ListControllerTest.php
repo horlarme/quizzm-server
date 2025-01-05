@@ -4,7 +4,7 @@ use App\Models\Player;
 use App\Models\Quiz;
 use App\Models\User;
 
-test('only quiz owner can view players', function () {
+test('only quiz owner can view players', function (): void {
     $quiz = Quiz::factory()->create();
 
     $this->actingAs(User::factory()->create())
@@ -12,7 +12,7 @@ test('only quiz owner can view players', function () {
         ->assertForbidden();
 });
 
-test('quiz owner can view players', function () {
+test('quiz owner can view players', function (): void {
     $quiz = Quiz::factory()
         ->has(Player::factory()->count(5))
         ->create();
@@ -23,7 +23,7 @@ test('quiz owner can view players', function () {
         ->assertJsonCount(5, 'data');
 });
 
-test('players list is paginated', function () {
+test('players list is paginated', function (): void {
     $quiz = Quiz::factory()
         ->has(Player::factory()->count(20))
         ->create();

@@ -2,21 +2,21 @@
 
 use Laravel\Socialite\Facades\Socialite;
 
-it('redirects to Google for authentication', function () {
+it('redirects to Google for authentication', function (): void {
     Socialite::shouldReceive('driver->stateless->redirect')->andReturn(redirect('https://google.com'));
 
     $this->get(route('oauth.login', 'google'))
         ->assertRedirect('https://google.com');
 });
 
-it('unsupported driver not allowed', function () {
+it('unsupported driver not allowed', function (): void {
     Socialite::shouldReceive('driver->stateless->redirect')->andReturn(redirect('https://facebook.com'));
 
     $this->get(route('oauth.login', 'facebook'))->assertBadRequest();
 });
 
-it('handles Google callback and logs in user', function () {
-    $googleUser = Mockery::mock('Laravel\Socialite\Two\User');
+it('handles Google callback and logs in user', function (): void {
+    $googleUser = Mockery::mock(\Laravel\Socialite\Two\User::class);
     $googleUser->shouldReceive('getEmail')->andReturn('test@example.com');
     $googleUser->shouldReceive('getName')->andReturn('Test User');
     $googleUser->shouldReceive('getAvatar')->andReturn('https://example.com/avatar.jpg');
@@ -29,15 +29,15 @@ it('handles Google callback and logs in user', function () {
         ]);
 });
 
-it('redirects to GitHub for authentication', function () {
+it('redirects to GitHub for authentication', function (): void {
     Socialite::shouldReceive('driver->stateless->redirect')->andReturn(redirect('https://github.com'));
 
     $this->get(route('oauth.login', 'github'))
         ->assertRedirect('https://github.com');
 });
 
-it('handles GitHub callback and logs in user', function () {
-    $githubUser = Mockery::mock('Laravel\Socialite\Two\User');
+it('handles GitHub callback and logs in user', function (): void {
+    $githubUser = Mockery::mock(\Laravel\Socialite\Two\User::class);
     $githubUser->shouldReceive('getEmail')->andReturn('test@example.com');
     $githubUser->shouldReceive('getName')->andReturn('Test User');
     $githubUser->shouldReceive('getAvatar')->andReturn('https://example.com/avatar.jpg');

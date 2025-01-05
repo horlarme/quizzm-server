@@ -11,7 +11,7 @@ trait HasUlid
 
     protected static function bootHasUlid()
     {
-        static::creating(function (self $model) {
+        static::creating(static function (self $model): void {
             $model->setAttribute('id', Str::ulid()->toString());
         });
     }

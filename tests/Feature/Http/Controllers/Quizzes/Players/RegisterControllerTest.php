@@ -4,7 +4,7 @@ use App\Models\Player;
 use App\Models\Quiz;
 use App\Models\User;
 
-test('users cannot register for their own quiz', function () {
+test('users cannot register for their own quiz', function (): void {
     $quiz = Quiz::factory()->published()->create();
 
     $this->actingAs($quiz->user)
@@ -12,7 +12,7 @@ test('users cannot register for their own quiz', function () {
         ->assertForbidden();
 });
 
-test('users cannot register for draft quizzes', function () {
+test('users cannot register for draft quizzes', function (): void {
     $quiz = Quiz::factory()->draft()->create();
 
     $this->actingAs(User::factory()->create())
@@ -20,7 +20,7 @@ test('users cannot register for draft quizzes', function () {
         ->assertForbidden();
 });
 
-test('users can register for published quizzes', function () {
+test('users can register for published quizzes', function (): void {
     $quiz = Quiz::factory()->published()->create([
         'require_registration' => true,
         'require_approval' => false,
@@ -34,7 +34,7 @@ test('users can register for published quizzes', function () {
     expect($quiz->players()->where('user_id', $user->id)->exists())->toBeTrue();
 });
 
-test('registration requires approval when configured', function () {
+test('registration requires approval when configured', function (): void {
     $quiz = Quiz::factory()->published()->create([
         'require_registration' => true,
         'require_approval' => true,
@@ -46,7 +46,7 @@ test('registration requires approval when configured', function () {
         ->assertJsonPath('status', Player::StatusPending);
 });
 
-test('users cannot register multiple times', function () {
+test('users cannot register multiple times', function (): void {
     $quiz = Quiz::factory()->published()->create([
         'require_registration' => true,
     ]);

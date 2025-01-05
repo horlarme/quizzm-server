@@ -2,18 +2,18 @@
 
 use Database\Factories\TagFactory;
 
-test('unauthenticated users cannot access the create quiz api', function () {
+test('unauthenticated users cannot access the create quiz api', function (): void {
     $this->postJson(route('quizzes.create'))
         ->assertUnauthorized();
 });
 
-test('authenticated users can access the create quiz api', function () {
+test('authenticated users can access the create quiz api', function (): void {
     $this->actingAs(\Database\Factories\UserFactory::new()->create())
         ->postJson(route('quizzes.create'))
         ->assertJsonValidationErrors(['description', 'title', 'thumbnail', 'tags']);
 });
 
-test('quiz creation requires at least one tag', function () {
+test('quiz creation requires at least one tag', function (): void {
     $this->actingAs(\Database\Factories\UserFactory::new()->create())
         ->postJson(
             route('quizzes.create'),
@@ -24,7 +24,7 @@ test('quiz creation requires at least one tag', function () {
         ->assertJsonValidationErrors(['tags']);
 });
 
-test('quiz creation are automatically saved as draft', function () {
+test('quiz creation are automatically saved as draft', function (): void {
     $tag = TagFactory::new()->createOne();
 
     $this->actingAs(\Database\Factories\UserFactory::new()->create())

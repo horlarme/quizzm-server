@@ -4,7 +4,7 @@ use App\Models\Player;
 use App\Models\Quiz;
 use App\Models\User;
 
-test('cannot update player status if quiz does not require registration', function () {
+test('cannot update player status if quiz does not require registration', function (): void {
     $quiz = Quiz::factory()->withoutRegistration()->create();
     $player = Player::factory()->pending()->for($quiz)->create();
 
@@ -16,7 +16,7 @@ test('cannot update player status if quiz does not require registration', functi
         ->assertJsonPath('message', 'This quiz does not require registration approval.');
 });
 
-test('only quiz owner can update player status', function () {
+test('only quiz owner can update player status', function (): void {
     $quiz = Quiz::factory()->requiresRegistration()->create();
     $player = Player::factory()->pending()->for($quiz)->create();
 
@@ -27,7 +27,7 @@ test('only quiz owner can update player status', function () {
         ->assertForbidden();
 });
 
-test('quiz owner can approve pending players', function () {
+test('quiz owner can approve pending players', function (): void {
     $quiz = Quiz::factory()->requiresRegistration()->create();
     $player = Player::factory()->pending()->for($quiz)->create();
 
@@ -41,7 +41,7 @@ test('quiz owner can approve pending players', function () {
     expect($player->fresh()->status)->toBe(Player::StatusApproved);
 });
 
-test('quiz owner can reject pending players', function () {
+test('quiz owner can reject pending players', function (): void {
     $quiz = Quiz::factory()->requiresRegistration()->create();
     $player = Player::factory()->pending()->for($quiz)->create();
 
@@ -55,7 +55,7 @@ test('quiz owner can reject pending players', function () {
     expect($player->fresh()->status)->toBe(Player::StatusRejected);
 });
 
-test('cannot update non-pending players', function () {
+test('cannot update non-pending players', function (): void {
     $quiz = Quiz::factory()->requiresRegistration()->create();
     $player = Player::factory()->approved()->for($quiz)->create();
 
@@ -66,7 +66,7 @@ test('cannot update non-pending players', function () {
         ->assertForbidden();
 });
 
-test('status must be valid', function () {
+test('status must be valid', function (): void {
     $quiz = Quiz::factory()->requiresRegistration()->create();
     $player = Player::factory()->pending()->for($quiz)->create();
 

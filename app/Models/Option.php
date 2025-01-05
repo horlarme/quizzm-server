@@ -35,10 +35,6 @@ class Option extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'is_correct' => 'boolean',
-    ];
-
     /**
      * @return BelongsTo<Question, self>
      */
@@ -50,5 +46,12 @@ class Option extends Model
     public function results()
     {
         return $this->hasMany(Result::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_correct' => 'boolean',
+        ];
     }
 }

@@ -2,7 +2,7 @@
 
 use App\Models\Quiz;
 
-test('fetching a single quiz returns the correct data', function () {
+test('fetching a single quiz returns the correct data', function (): void {
     $quiz = Quiz::factory()->validQuiz()->public()->published()->create();
 
     $this->getJson(route('quizzes.get', $quiz))
@@ -18,7 +18,7 @@ test('fetching a single quiz returns the correct data', function () {
         ]);
 });
 
-test('only owner can fetch a draft quiz', function () {
+test('only owner can fetch a draft quiz', function (): void {
     $quiz = Quiz::factory()->draft()->create();
 
     $this->actingAs($quiz->user)
@@ -32,12 +32,12 @@ test('only owner can fetch a draft quiz', function () {
         ->assertForbidden();
 });
 
-test('fetching a non-existent quiz returns a 404 error', function () {
+test('fetching a non-existent quiz returns a 404 error', function (): void {
     $this->getJson(route('quizzes.get', 999))
         ->assertNotFound();
 });
 
-test('only owner can see correct options for a quiz', function () {
+test('only owner can see correct options for a quiz', function (): void {
     $quiz = Quiz::factory()->validQuiz()->create();
 
     $this->actingAs($quiz->user)

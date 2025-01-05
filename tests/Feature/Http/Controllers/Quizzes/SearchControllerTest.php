@@ -1,6 +1,6 @@
 <?php
 
-test('unauthentic user can access search quiz', function () {
+test('unauthentic user can access search quiz', function (): void {
     \App\Models\Quiz::factory(20)
         ->public()
         ->published()
@@ -16,7 +16,7 @@ test('unauthentic user can access search quiz', function () {
         ]);
 });
 
-test('private quizzes are not included in search results', function () {
+test('private quizzes are not included in search results', function (): void {
     \App\Models\Quiz::factory(4)
         ->published()
         ->sequence([
@@ -33,7 +33,7 @@ test('private quizzes are not included in search results', function () {
         ]);
 });
 
-test('only published quizzes are included in search results', function () {
+test('only published quizzes are included in search results', function (): void {
     \App\Models\Quiz::factory(2)
         ->public()
         ->sequence([

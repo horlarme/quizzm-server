@@ -2,14 +2,14 @@
 
 use App\Models\User;
 
-test('unauthenticated users cannot view profiles', function () {
+test('unauthenticated users cannot view profiles', function (): void {
     $user = User::factory()->create();
 
     $this->getJson(route('users.show', $user))
         ->assertUnauthorized();
 });
 
-test('authenticated users can view user profiles', function () {
+test('authenticated users can view user profiles', function (): void {
     $viewer = User::factory()->create();
     $user = User::factory()->create();
 
@@ -24,7 +24,7 @@ test('authenticated users can view user profiles', function () {
         ]);
 });
 
-test('user email is not exposed in public profile', function () {
+test('user email is not exposed in public profile', function (): void {
     $viewer = User::factory()->create();
     $user = User::factory()->create();
 

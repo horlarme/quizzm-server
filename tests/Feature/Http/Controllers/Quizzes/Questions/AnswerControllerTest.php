@@ -3,7 +3,7 @@
 use App\Models\Quiz;
 use App\Models\User;
 
-test('users can submit answers', function () {
+test('users can submit answers', function (): void {
     $quiz = Quiz::factory()
         ->published()
         ->userStart()
@@ -25,7 +25,7 @@ test('users can submit answers', function () {
             'value' => $quiz->questions->get(1)->options->get(1)->value,
         ]);
 });
-test('cannot answer the same question twice', function () {
+test('cannot answer the same question twice', function (): void {
     $quiz = Quiz::factory()
         ->published()
         ->userStart()

@@ -3,7 +3,7 @@
 use App\Models\Question;
 use App\Models\Quiz;
 
-test('a draft quiz can be published', function () {
+test('a draft quiz can be published', function (): void {
     $quiz = Quiz::factory()
         ->draft()
         ->validQuiz()
@@ -22,7 +22,7 @@ test('a draft quiz can be published', function () {
         ->and($quiz->published_at)->not->toBeNull();
 });
 
-test('a non-draft quiz cannot be published', function () {
+test('a non-draft quiz cannot be published', function (): void {
     $quiz = Quiz::factory()->validQuiz()->published()->create();
 
     $this->actingAs($quiz->user)
@@ -30,7 +30,7 @@ test('a non-draft quiz cannot be published', function () {
         ->assertForbidden();
 });
 
-test('a quiz with less than 2 questions cannot be published', function () {
+test('a quiz with less than 2 questions cannot be published', function (): void {
     $quiz = Quiz::factory()
         ->published()
         ->has(Question::factory()->count(1))
@@ -41,7 +41,7 @@ test('a quiz with less than 2 questions cannot be published', function () {
         ->assertForbidden();
 });
 
-test('a quiz with a start time less than 30 minutes from now cannot be published', function () {
+test('a quiz with a start time less than 30 minutes from now cannot be published', function (): void {
     $quiz = Quiz::factory()
         ->published()
         ->validQuiz()

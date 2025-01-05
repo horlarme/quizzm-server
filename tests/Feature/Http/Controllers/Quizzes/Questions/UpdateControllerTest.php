@@ -4,7 +4,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
-test('others cannot update questions', function () {
+test('others cannot update questions', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs(User::factory()->create())
@@ -15,7 +15,7 @@ test('others cannot update questions', function () {
         ->assertForbidden();
 });
 
-test('cannot update questions for a non-draft quiz', function () {
+test('cannot update questions for a non-draft quiz', function (): void {
     $quiz = Quiz::factory()->published()->validQuiz()->create();
 
     $this->actingAs($quiz->user)
@@ -26,7 +26,7 @@ test('cannot update questions for a non-draft quiz', function () {
         ->assertForbidden();
 });
 
-test('only owner can update questions', function () {
+test('only owner can update questions', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs($quiz->user)
@@ -52,7 +52,7 @@ test('only owner can update questions', function () {
         ]);
 });
 
-test('questions must have minimum of 4 options', function () {
+test('questions must have minimum of 4 options', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs($quiz->user)
@@ -73,7 +73,7 @@ test('questions must have minimum of 4 options', function () {
         ->assertJsonValidationErrorFor('options');
 });
 
-test('questions must have only one correct option', function () {
+test('questions must have only one correct option', function (): void {
     $quiz = Quiz::factory()->draft()->validQuiz()->create();
 
     $this->actingAs($quiz->user)

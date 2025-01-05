@@ -4,7 +4,7 @@ use App\Models\Quiz;
 use App\Models\Result;
 use App\Models\User;
 
-test('quiz leaderboard shows correct rankings', function () {
+test('quiz leaderboard shows correct rankings', function (): void {
     $quiz = Quiz::factory()
         ->published()
         ->validQuiz(4)

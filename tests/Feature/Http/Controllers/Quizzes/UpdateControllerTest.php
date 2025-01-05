@@ -2,7 +2,7 @@
 
 use App\Models\Quiz;
 
-test('only quiz owner can update quiz', function () {
+test('only quiz owner can update quiz', function (): void {
     /** @var Quiz $quiz */
     $quiz = Quiz::factory()->draft()->create();
 
@@ -11,7 +11,7 @@ test('only quiz owner can update quiz', function () {
         ->assertForbidden();
 });
 
-test('only draft quizzes can be updated', function () {
+test('only draft quizzes can be updated', function (): void {
     /** @var Quiz $quiz */
     $quiz = Quiz::factory()->published()->create();
 
@@ -20,7 +20,7 @@ test('only draft quizzes can be updated', function () {
         ->assertForbidden();
 });
 
-test('quiz can be updated', function () {
+test('quiz can be updated', function (): void {
     /** @var Quiz $quiz */
     $quiz = Quiz::factory()->draft()->create();
 
