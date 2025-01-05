@@ -14,9 +14,9 @@ class LeaderboardResource extends JsonResource
     {
         return [
             'user' => new UserPublicResource($this->user),
-            'total_answered' => $this->getAttribute('total_answered'),
+            'total_answered' => (int) $this->getAttribute('total_answered'),
             'correct_answers' => (int) $this->getAttribute('correct_answers'),
-            'score' => round(((int) $this->getAttribute('correct_answers') / (int) $this->getAttribute('total_questions')) * 100, 2),
+            'score' => (int) round(((int) $this->getAttribute('correct_answers') / (int) $this->getAttribute('total_questions')) * 100, 2),
         ];
     }
 }
