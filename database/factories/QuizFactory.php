@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Option;
 use App\Models\Quiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Mmo\Faker\PicsumProvider;
 
 /**
  * @extends Factory<Quiz>
@@ -17,7 +18,7 @@ class QuizFactory extends Factory
             'user_id' => UserFactory::new(),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
-            'thumbnail' => $this->faker->imageUrl(),
+            'thumbnail' => PicsumProvider::picsumUrl(),
             'require_registration' => $this->faker->boolean(),
             'require_approval' => $this->faker->boolean(),
             'status' => $this->faker->randomElement(Quiz::Statuses),
@@ -39,7 +40,6 @@ class QuizFactory extends Factory
     {
         return $this->state([
             'require_registration' => true,
-            'require_approval' => true,
         ]);
     }
 
@@ -55,7 +55,7 @@ class QuizFactory extends Factory
     {
         return $this->state([
             'start_type' => Quiz::StartTypeAutomatic,
-            'start_time' => $startTime ?? now()->addHour(),
+            'start_time' => $startTime ?? $this->faker->dateTimeBetween('+30minutes', '+1 month'),
         ]);
     }
 
@@ -71,7 +71,7 @@ class QuizFactory extends Factory
     {
         return $this->state([
             'start_type' => Quiz::StartTypeUser,
-            'start_time' => $startTime,
+            'start_time' => $startTime ?? $this->faker->dateTimeBetween('+30minutes', '+1 month'),
         ]);
     }
 
@@ -107,15 +107,24 @@ class QuizFactory extends Factory
 
     public function validQuiz($count = 2): static
     {
-        return $this->has(
-            QuestionFactory::new()
-                ->count($count)
-                ->has(Option::factory()->count(4)->sequence(
-                    ['is_correct' => true],
-                    ['is_correct' => false],
-                    ['is_correct' => false],
-                    ['is_correct' => false],
-                ))
-        );
+        return $this
+            ->has(TagFactory::new()->count(5))
+            ->has(
+                QuestionFactory::new()
+                    ->count($count)
+                    ->has(Option::factory()->count(4)->sequence(
+                        ['is_correct' => true],
+                        ['is_correct' => false],
+                        ['is_correct' => false],
+                        ['is_correct' => false],
+                    ))
+            );
+    }
+
+    public function requiresApproval(bool $required = true): QuizFactory|Factory
+    {
+        return $this->state([
+            'require_approval' => $required,
+        ]);
     }
 }

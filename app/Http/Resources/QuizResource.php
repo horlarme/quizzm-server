@@ -13,7 +13,7 @@ class QuizResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $this->loadMissing('questions.options');
+        $this->loadMissing(['tags', 'user', 'questions.options']);
 
         return [
             'id' => $this->id,
@@ -31,6 +31,7 @@ class QuizResource extends JsonResource
             'questions_count' => count($this->questions),
             'questions' => $this->when($request->user()?->id === $this->user_id, fn () => QuestionResource::collection($this->questions)),
             'user' => new UserPublicResource($this->user),
+            'tags' => TagResource::collection($this->tags),
         ];
     }
 }

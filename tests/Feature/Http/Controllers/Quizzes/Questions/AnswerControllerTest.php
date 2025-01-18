@@ -6,7 +6,7 @@ use App\Models\User;
 test('users can submit answers', function (): void {
     $quiz = Quiz::factory()
         ->published()
-        ->userStart()
+        ->userStart(now())
         ->validQuiz()
         ->withoutRegistration()
         ->create();

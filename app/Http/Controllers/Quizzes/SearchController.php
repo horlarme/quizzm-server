@@ -29,7 +29,8 @@ class SearchController extends Controller
             Quiz::query()
                 ->with(['tags', 'user'])
                 ->withCount('questions')
-                ->scopes(['selectMinimal', 'public', 'published'])
+                ->scopes(['selectMinimal', 'public', 'published', 'orderByStartTime'])
+                ->search($request->string('search'))
                 ->paginate(page: $request->integer('page', 1))
         );
     }

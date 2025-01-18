@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Mmo\Faker\PicsumProvider;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Option>
@@ -21,7 +22,7 @@ class OptionFactory extends Factory
     public function image(): OptionFactory|Factory
     {
         return $this->state([
-            'value' => $this->faker->imageUrl(),
+            'value' => PicsumProvider::picsumUrl(),
         ]);
     }
 }

@@ -40,9 +40,11 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static \Database\Factories\QuizFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz orderByStartTime()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz public()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz published()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz search(?string $query = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\Quiz selectMinimal()
  *
  * @mixin \Eloquent
@@ -95,9 +97,20 @@ class Quiz extends Model
         return $this->status === self::StatusDraft;
     }
 
+    public function scopeSearch(Builder $builder, ?string $query = null): Builder
+    {
+        return $builder->when($query, fn (Builder $builder) => $builder->where(fn (Builder $builder) => $builder->where('title', 'like', $query.'%')
+            ->orWhere('description', 'like', $query.'%')));
+    }
+
     public function scopeSelectMinimal(Builder $builder): Builder
     {
-        return $builder->select('id', 'title', 'thumbnail', 'visibility', 'created_at', 'user_id')
+        return $builder->select([
+            'id', 'title', 'thumbnail',
+            'start_type', 'start_time', 'published_at',
+            'visibility', 'created_at', 'user_id',
+            'require_approval', 'require_registration',
+        ])
             ->addSelect(DB::raw('LEFT(description, 100) as description'));
     }
 
@@ -195,5 +208,12 @@ class Quiz extends Model
             'require_approval' => 'boolean',
             'start_time' => 'datetime',
         ];
+    }
+
+    public function scopeOrderByStartTime(Builder $builder)
+    {
+        return $builder
+            ->oldest('start_time')
+            ->where('start_time', '>=', now());
     }
 }

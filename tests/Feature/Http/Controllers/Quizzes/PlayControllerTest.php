@@ -4,7 +4,7 @@ use App\Models\Player;
 use App\Models\Quiz;
 
 test('players can play a registered quiz', function (): void {
-    $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart()->create();
+    $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart(now())->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 
     $this->actingAs($player->user)
@@ -20,6 +20,7 @@ test('players can play a quiz they are not approved to play', function (): void 
     $quiz = Quiz::factory()->validQuiz()
         ->published()
         ->requiresRegistration()
+        ->requiresApproval()
         ->public()
         ->userStart()
         ->create();
@@ -48,7 +49,7 @@ test('players cannot play a quiz they have not registered for', function (): voi
 });
 
 test('the next question is returned when the previous question is answered', function (): void {
-    $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart()->create();
+    $quiz = Quiz::factory()->validQuiz()->published()->public()->userStart(now())->create();
     $player = Player::factory()->for($quiz)->approved()->create();
 
     \App\Models\Result::factory()

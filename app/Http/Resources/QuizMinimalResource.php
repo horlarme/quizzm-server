@@ -19,11 +19,14 @@ class QuizMinimalResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'thumbnail' => $this->thumbnail,
-            'description' => $this->description,
             'visibility' => $this->visibility,
-            'questions_count' => $this->questions_count,
             'user' => new UserPublicResource($this->user),
             'created_at' => $this->created_at,
+            'published_at' => $this->published_at,
+            'start_time' => $this->start_time,
+            'start_type' => $this->start_type,
+            'require_registration' => $this->require_registration,
+            'require_approval' => $this->require_approval,
             'tags' => TagResource::collection($this->tags),
         ];
     }
