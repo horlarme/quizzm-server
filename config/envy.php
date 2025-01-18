@@ -34,7 +34,7 @@ return [
      * variable is used. Enabling this option will display a comment above a
      * linked .env variable with reference to the correct config file.
      */
-    'display_location_hints' => false,
+    'display_location_hints' => true,
 
     /**
      * Enabling this option will also insert any provided defaults in your .env file
@@ -51,7 +51,7 @@ return [
      * second parameter. Envy will ignore any calls with a set default if this
      * option is set to true. Otherwise, it will include them whilst syncing.
      */
-    'exclude_calls_with_defaults' => true,
+    'exclude_calls_with_defaults' => false,
 
     /**
      * Any environment variables that are added to exclusions will never be inserted
